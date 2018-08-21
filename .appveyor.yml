@@ -33,3 +33,10 @@ build_script:
 artifacts:
   - path: idle_service.dll
     name: binary
+
+deploy:
+  release: idle_service-v$(appveyor_build_version)_$(platform)
+  provider: GitHub
+  auth_token:
+    secure: 5Kw96zBtays+1/MTUvjHq3fIhdwS0ToSet455MxNkrFscr/b7w3PDviK5ct8wjhv
+  artifact: /.*\.dll
