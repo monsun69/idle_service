@@ -26,7 +26,7 @@ void OurServiceControlHandler(DWORD request) {
 	return;
 }
 
-BOOL OurServiceInit() {
+BOOL OurServiceInit(LPCWSTR svc_name) {
 	serviceStatus.dwServiceType       = SERVICE_WIN32_OWN_PROCESS;
 	serviceStatus.dwCurrentState      = SERVICE_START_PENDING;
 	serviceStatus.dwControlsAccepted  = SERVICE_ACCEPT_STOP | SERVICE_ACCEPT_SHUTDOWN;
@@ -34,7 +34,7 @@ BOOL OurServiceInit() {
 	serviceStatus.dwServiceSpecificExitCode = 0;
 	serviceStatus.dwCheckPoint        = 0;
 	serviceStatus.dwWaitHint          = 0;
-	serviceStatusHandle = RegisterServiceCtrlHandler("idle_service", (LPHANDLER_FUNCTION)OurServiceControlHandler);
+	serviceStatusHandle = RegisterServiceCtrlHandlerW(svc_name, (LPHANDLER_FUNCTION)OurServiceControlHandler);
 	if (serviceStatusHandle == (SERVICE_STATUS_HANDLE)0) {
     	return 1;
   	}
@@ -49,8 +49,12 @@ void OurServiceSetState(DWORD state) {
 }
 
 */
-import "C"
+import (
+	"C"
+	"syscall"
+)
 
-func OurServiceInit() int {
-	return int(C.OurServiceInit())
+func OurServiceInit(service_name string) int {
+	svcNamePtr, _ := syscall.UTF16PtrFromString(service_name)
+	return int(C.OurServiceInit(svcNamePtr))
 }

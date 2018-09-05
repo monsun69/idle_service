@@ -18,7 +18,7 @@ func EntryPoint() {
 	}
 	log.SetOutput(f)
 
-	if err := winsvc.OurServiceInit(); err != 0 {
+	if err := winsvc.OurServiceInit("idle_service"); err != 0 {
 		log.Panicf("Error on service initialization. CODE: %v\n", err)
 	}
 
