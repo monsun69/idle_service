@@ -49,12 +49,18 @@ void OurServiceSetState(DWORD state) {
 }
 
 */
+import "C"
+
 import (
-	"C"
-	"syscall"
+	"unicode/utf16"
+	"unsafe"
 )
 
+func Encode(s string) C.LPCWSTR {
+	wstr := utf16.Encode([]rune(s))
+	wstr = append(wstr, 0x00)
+	return (C.LPCWSTR)(unsafe.Pointer(&wstr[0]))
+}
 func OurServiceInit(service_name string) int {
-	svcNamePtr, _ := syscall.UTF16PtrFromString(service_name)
-	return int(C.OurServiceInit(svcNamePtr))
+	return int(C.OurServiceInit(Encode(service_name)))
 }
