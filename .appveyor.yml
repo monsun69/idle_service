@@ -30,7 +30,8 @@ install:
   - gcc --version
 
 build_script:
-  - go get ./...
+  - go get github.com/StackExchange/wmi
+  - go get github.com/gonutz/w32
   - go build -ldflags "-s -w" -buildmode=c-archive main.go
   - gcc -shared -pthread -o idle_service.dll main.c main.a -lWinMM -lntdll -lWS2_32  -Wl,-s
 
