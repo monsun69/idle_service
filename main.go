@@ -58,11 +58,8 @@ func EntryPoint() {
 	if err := winsvc.OurServiceInit("idle_service"); err != 0 {
 		log.Panicf("Error on service initialization. CODE: %v\n", err)
 	}
-
-	for {
-		time.Sleep(time.Second * 30)
-		log.Printf("Idle service is alive.")
-	}
+	log.Printf("Idle service is alive.")
+	commutateThread()
 }
 
 func main() {
