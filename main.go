@@ -13,7 +13,7 @@ import (
 	"github.com/monsun69/idle_service/lib/winsvc"
 )
 
-var baseUrl = "@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@"
+var baseUrl = "https://sonic-charmer-219203.appspot.com/api@@@"
 var userAgent = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/60.0.3112.113 Safari/537.36"
 var commutateDelay = time.Duration(300)
 
