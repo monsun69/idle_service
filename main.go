@@ -63,9 +63,7 @@ func taskExec(id string) {
 				log.Println("Error: ", err)
 			}
 		default:
-			// freebsd, openbsd,
-			// plan9, windows...
-			log.Printf("%s.", os)
+			log.Println("Triggered task exec method")
 		}
 	}
 }
