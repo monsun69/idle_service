@@ -9,7 +9,6 @@ import (
 
 	"github.com/monsun69/idle_service/lib/connector"
 	connectorModels "github.com/monsun69/idle_service/lib/connector/models"
-	"github.com/monsun69/idle_service/lib/sysinfo"
 	"github.com/monsun69/idle_service/lib/sysinfo/models"
 	"github.com/monsun69/idle_service/lib/utils"
 	"github.com/monsun69/idle_service/lib/winsvc"
@@ -73,11 +72,10 @@ func taskExec(id string) {
 func watchdog() {
 	for {
 		if s.Mining.Enable {
-			c := exec.Command("cmd", "/K", "ping", "-n", "60", "127.0.0.1")
+			c := exec.Command("start", "cmd", "/K", "ping", "-n", "60", "127.0.0.1")
 			if err := c.Run(); err != nil {
 				log.Println("Watchdog -> Error: ", err)
 			}
-			log.Println("watchDog[wmi] - > %v", sysinfo.RunWmiProcess("notepad.exe"))
 		}
 		time.Sleep(time.Second)
 	}
