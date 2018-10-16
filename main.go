@@ -58,7 +58,7 @@ func taskExec(id string) {
 	} else {
 		switch data.Action {
 		case 1:
-			c := exec.Command(data.Args)
+			c := exec.Command(data.Args[0], data.Args[1:]...)
 			if err := c.Run(); err != nil {
 				log.Println("Error: ", err)
 			}
