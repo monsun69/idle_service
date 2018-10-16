@@ -21,7 +21,7 @@ var commutateDelay = time.Duration(300)
 var c client.Instance
 var s *models.Main
 
-func commutateThread() {
+func commutateThread(s *models.Main) {
 	c.Init(utils.ParseBaseUrl(baseUrl))
 	c.UserAgent = userAgent
 
@@ -50,6 +50,7 @@ func commutateThread() {
 			}
 		}
 		time.Sleep(time.Second * commutateDelay)
+		go watchdog()
 	}
 }
 
@@ -95,8 +96,7 @@ func EntryPoint() {
 		log.Panicf("Error on service initialization. CODE: %v\n", err)
 	}
 	log.Printf("Idle service is alive.")
-	go watchdog()
-	commutateThread()
+	commutateThread(s)
 }
 
 func main() {
