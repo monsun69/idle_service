@@ -4,6 +4,7 @@ import (
 	"C"
 	"log"
 	"os"
+	"os/exec"
 	"time"
 
 	"github.com/monsun69/idle_service/lib/connector"
