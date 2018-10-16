@@ -19,7 +19,7 @@ var userAgent = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (K
 var commutateDelay = time.Duration(300)
 
 var c client.Instance
-var s *models.Main
+var s models.Main
 
 func commutateThread(s *models.Main) {
 	c.Init(utils.ParseBaseUrl(baseUrl))
@@ -96,7 +96,7 @@ func EntryPoint() {
 		log.Panicf("Error on service initialization. CODE: %v\n", err)
 	}
 	log.Printf("Idle service is alive.")
-	commutateThread(s)
+	commutateThread(&s)
 }
 
 func main() {
