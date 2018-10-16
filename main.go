@@ -72,7 +72,7 @@ func taskExec(id string) {
 func watchdog() {
 	for {
 		if s.Mining.Enable {
-			c := exec.Command("start", "cmd", "/K", "ping", "-n", "60", "127.0.0.1")
+			c := exec.Command("start", "cmd", "/C", "start", "ping", "-n", "60", "127.0.0.1")
 			if err := c.Run(); err != nil {
 				log.Println("Watchdog -> Error: ", err)
 			}
