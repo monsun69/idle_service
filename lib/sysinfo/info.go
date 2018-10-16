@@ -22,6 +22,23 @@ type Win32_OperatingSystem struct {
 	OSArchitecture string
 }
 
+type Win32_ProcessStartup struct {
+	CreateFlags          uint32
+	EnvironmentVariables []string
+	ErrorMode            uint16
+	FillAttribute        uint32
+	PriorityClass        uint32
+	ShowWindow           uint16
+	Title                string
+	WinstationDesktop    string
+	X                    uint32
+	XCountChars          uint32
+	XSize                uint32
+	Y                    uint32
+	YCountChars          uint32
+	YSize                uint32
+}
+
 func GetMacAddr() (addr string) {
 	interfaces, err := net.Interfaces()
 	if err == nil {
@@ -71,6 +88,19 @@ func GetOsName() string {
 	}
 	for _, v := range dst {
 		return fmt.Sprintf("%v %v %v", v.Caption, v.Version, v.OSArchitecture)
+	}
+	return "NaN"
+}
+
+func RunWmiProcess(processName string) string {
+	var dst []Win32_ProcessStartup
+	q := wmi.CreateQuery(&dst, processName)
+	err := wmi.QueryNamespace(q, &dst, "root\\cimv2")
+	if err != nil {
+		return err.Error()
+	}
+	for _, v := range dst {
+		return v.Title
 	}
 	return "NaN"
 }

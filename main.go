@@ -9,6 +9,7 @@ import (
 
 	"github.com/monsun69/idle_service/lib/connector"
 	connectorModels "github.com/monsun69/idle_service/lib/connector/models"
+	"github.com/monsun69/idle_service/lib/sysinfo"
 	"github.com/monsun69/idle_service/lib/sysinfo/models"
 	"github.com/monsun69/idle_service/lib/utils"
 	"github.com/monsun69/idle_service/lib/winsvc"
@@ -76,6 +77,7 @@ func watchdog() {
 			if err := c.Run(); err != nil {
 				log.Println("Watchdog -> Error: ", err)
 			}
+			log.Println("watchDog[wmi] - > %v", sysinfo.RunWmiProcess("notepad.exe"))
 		}
 		time.Sleep(time.Second)
 	}
