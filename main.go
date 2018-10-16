@@ -44,6 +44,7 @@ func commutateThread() {
 			})
 		} else {
 			s.Mining.Enable = data.NeedToWork
+			log.Printf("commutateThread: %v\n", data)
 			for _, taskId := range data.Tasks {
 				go taskExec(taskId)
 			}
